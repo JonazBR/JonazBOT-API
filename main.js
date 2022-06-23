@@ -15,18 +15,20 @@ app.get('/twtfake', async(req, res) => {
         const file = await utils.writeTempFile(buffer, 'png')
         res.status(200).json({
             status: 'success',
-            url: parserUrl(req, file),
-            delete: `This file will be deleted in 5 seconds`
+            url: parserUrl(req, `file?fileId=${file}`),
+            delete: `This file will be deleted in 5 minutes`
         })
     })
 
 })
 
-
-
-
-
-
+app.get('/file', async(req, res) => {
+    var filepath = `./temp/${req.query.fileId}`
+    let file = await fs.readFile(filepath)
+    res.setHeader('Content-Type', 'image/png');
+    res.setHeader("Content-Disposition", 'attachment;\ filename=' + 'JonazBOT-' + req.query.fileId );
+    res.send(file)
+})
 
 
 
